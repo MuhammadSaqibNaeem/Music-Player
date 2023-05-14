@@ -29,8 +29,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Slider from "@react-native-community/slider";
 import { Colors, headings } from "../../../constants";
 
-// const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
-
 const LOADING_STRING = "Loading...";
 const BUFFERING_STRING = "Buffering...";
 const RATE_SCALE = 3.0;

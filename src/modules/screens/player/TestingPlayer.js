@@ -13,12 +13,15 @@ import {
   TouchableOpacity,
   ScrollView,
   ImageBackground,
+  Platform,
 } from "react-native";
+import * as FileSystem from "expo-file-system";
 import Foundation from "@expo/vector-icons/Foundation";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+
 import { Audio } from "expo-av";
 import {
   widthPercentageToDP as wp,
@@ -28,12 +31,70 @@ const { width, height } = Dimensions.get("window");
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Slider from "@react-native-community/slider";
 import { Colors, headings } from "../../../constants";
-
+import * as MediaLibrary from "expo-media-library";
 // const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
 
 const LOADING_STRING = "Loading...";
 const BUFFERING_STRING = "Buffering...";
 const RATE_SCALE = 3.0;
+
+// const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
+
+async function downloadMusic(url, filename) {
+  try {
+    // Download the file to the app's own directory
+    const fileUri = FileSystem.documentDirectory + filename;
+    const downloadObject = await FileSystem.downloadAsync(url, fileUri);
+
+    if (downloadObject.status === 200) {
+      // Create a new album in the media library
+      const albumName = "My Music";
+      let asset = null;
+
+      // Check if the app is running on Android
+      if (Platform.OS === "android") {
+        // On Android, we need to create an asset before creating an album
+        if (downloadObject.uri) {
+          asset = await MediaLibrary.createAssetAsync(downloadObject.uri);
+        }
+      }
+
+      let album;
+      if (Platform.OS === "android") {
+        album = await MediaLibrary.getAlbumAsync(albumName);
+        if (album === null) {
+          // On Android, make sure the asset object is not null or undefined before passing it to createAlbumAsync
+          if (asset) {
+            album = await MediaLibrary.createAlbumAsync(
+              albumName,
+              asset,
+              false
+            );
+          } else {
+            console.error(
+              "Error while creating album: asset object is null or undefined"
+            );
+            return;
+          }
+        }
+      } else {
+        album =
+          (await MediaLibrary.getAlbumAsync(albumName)) ||
+          (await MediaLibrary.createAlbumAsync(albumName));
+      }
+
+      // Copy the downloaded file to the new album
+      const copyAsset = await MediaLibrary.createAssetAsync(downloadObject.uri);
+      await MediaLibrary.addAssetsToAlbumAsync([copyAsset], album.id, false);
+
+      console.log("Finished downloading and saving to media library");
+    } else {
+      console.error("Error while downloading", downloadObject);
+    }
+  } catch (error) {
+    console.error("Error while downloading", error);
+  }
+}
 
 export default class AudioPlayer extends React.Component {
   constructor(props) {
@@ -90,10 +151,43 @@ export default class AudioPlayer extends React.Component {
 
     // Store the entire item object in AsyncStorage if liked
   }
+
+  // _toggleLike = async () => {
+  //   const { route } = this.props;
+  //   const { item } = route.params;
+
+  //   const isLiked = !this.state.isLiked;
+  //   this.setState({ isLiked });
+
+  //   try {
+  //     const value = await AsyncStorage.getItem("likedItems");
+  //     let likedItems = value ? JSON.parse(value) : [];
+
+  //     if (isLiked) {
+  //       likedItems.push(item);
+  //       // Download the music file when liked
+  //       await downloadMusic(item.url, item.filename);
+  //     } else {
+  //       likedItems = likedItems.filter((likedItem) => likedItem.id !== item.id);
+  //       // Remove the music file from the device when unliked
+  //       // await FileSystem.deleteAsync(FileSystem.documentDirectory + item.filename);
+  //     }
+
+  //     await AsyncStorage.setItem("likedItems", JSON.stringify(likedItems));
+
+  //     // Remove the current item ID from AsyncStorage if unliked
+  //     if (!isLiked) {
+  //       const currentItemId = await AsyncStorage.getItem("currentItemId");
+  //       if (currentItemId === item.id) {
+  //         await AsyncStorage.removeItem("currentItemId");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log("Error storing liked items:", error);
+  //   }
+  // };
+
   _toggleLike = async () => {
-    {
-      console.log("pre-----------------");
-    }
     const { route } = this.props;
     const { item } = route.params;
 
@@ -106,6 +200,15 @@ export default class AudioPlayer extends React.Component {
 
       if (isLiked) {
         likedItems.push(item);
+
+        await downloadMusic(item.preview, item.title + ".mp3");
+
+        console.log(
+          "url========1111111111111",
+          item.preview,
+          "filename==========",
+          item.title + ".mp3"
+        );
       } else {
         likedItems = likedItems.filter((likedItem) => likedItem.id !== item.id);
       }
@@ -120,7 +223,7 @@ export default class AudioPlayer extends React.Component {
         }
       }
     } catch (error) {
-      console.log("Error storing liked items:", error);
+      console.log("Error storing liked items: ", error);
     }
   };
   async _loadNewPlaybackInstance(songURI) {

@@ -76,20 +76,20 @@ const BottomTabNavigator = () => {
               <FontAwesome name={"music"} size={25} color={colors.yellow} />
             </View>
           ),
-          headerRight: (Colors) => (
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                style={{
-                  marginRight: wp("5%"),
-                  padding: 7,
-                  borderRadius: 10,
-                }}
-                onPress={() => console.log("I am Zia")}
-              >
-                <AntDesign name="search1" size={25} color={"white"} />
-              </TouchableOpacity>
-            </View>
-          ),
+          // headerRight: (Colors) => (
+          //   <View style={{ flexDirection: "row" }}>
+          //     <TouchableOpacity
+          //       style={{
+          //         marginRight: wp("5%"),
+          //         padding: 7,
+          //         borderRadius: 10,
+          //       }}
+          //       onPress={() => console.log("I am Zia")}
+          //     >
+          //       <AntDesign name="search1" size={25} color={"white"} />
+          //     </TouchableOpacity>
+          //   </View>
+          // ),
         }}
         component={Home}
       />

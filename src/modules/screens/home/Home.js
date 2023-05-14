@@ -9,6 +9,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -19,6 +20,7 @@ import RecentlyPlayed from "../../../global/components/RecentlyPlayed";
 import Songs from "../../../global/components/Songs";
 import colors from "../../../constants/colors";
 import axios from "axios";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const data1 = [
   { id: "1", name: "Suggested" },
@@ -33,7 +35,15 @@ const Home = () => {
   const [topTracks, setTopTracks] = useState([]);
   const [topArtists, setTopArtists] = useState([]);
   const [songs, setSongs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterContact, setFilterContact] = useState(songs);
 
+  useEffect(() => {
+    const newContacts = songs.filter((contact) =>
+      contact?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    );
+    setFilterContact(newContacts);
+  }, [searchTerm, songs]);
   // console.log('here is top artist ============ : ',topArtists)
 
   // items to be render
@@ -97,25 +107,32 @@ const Home = () => {
           keyExtractor={(item) => item.id}
         />
       </View>
+      <View style={styles.textInput}>
+        <Icon
+          name="search"
+          size={20}
+          color={Colors.yellow}
+          style={styles.icon}
+        />
+        <TextInput
+          placeholder="Search"
+          style={styles.input}
+          placeholderTextColor={Colors.yellow}
+          underlineColorAndroid="transparent"
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+        />
+      </View>
       {selectedItemId == "1" && (
         <>
-          <RecentlyPlayed data={songs} item={"Songs"} />
+          <RecentlyPlayed data={filterContact} item={"Songs"} />
           {/* <RecentlyPlayed data={topTracks} imageStyle artist={"Artist"} /> */}
           <RecentlyPlayed data={songs} item={"Most Played"} />
         </>
       )}
       {selectedItemId == "2" && (
         <>
-          <Songs data={songs} recently={"Songs"} />
-        </>
-      )}
-      {selectedItemId == "3" && (
-        <>
-          <Songs
-            text={"Date Added"}
-            imageStyle={{ borderRadius: 50 }}
-            recently={"85 Artist"}
-          />
+          <Songs data={filterContact} recently={"Songs"} />
         </>
       )}
     </ScrollView>
@@ -156,6 +173,30 @@ export const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     fontSize: 16,
+    fontWeight: "bold",
+  },
+  textInput: {
+    flexDirection: "row",
+    alignItems: "center",
+
+    borderRadius: 10,
+    marginHorizontal: 20,
+    marginVertical: 15,
+    elevation: 2,
+    borderColor: Colors.yellow,
+    borderWidth: 1,
+    borderRadius: 16,
+    top: 10,
+  },
+  icon: {
+    marginHorizontal: 10,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    color: Colors.yellow,
     fontWeight: "bold",
   },
 });
