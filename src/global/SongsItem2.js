@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: hp("20%"),
     borderWidth: 2,
-    borderColor: "white",
+    borderColor: Colors.yellow,
     marginHorizontal: hp("2%"),
     borderRadius: 10,
   },
