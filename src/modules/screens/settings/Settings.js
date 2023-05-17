@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useState } from "react";
 import {
   View,
@@ -31,23 +33,88 @@ const Settings = ({ artist, recently, mostPlayed, imageStyle, text }) => {
       <View style={styles.recent}>
         <View style={styles.imgContainer}>
           <Image
-            source={require("../../../assets/images/download.png")}
+            source={require("../../../assets/images/music11.png")}
             style={styles.img}
           />
         </View>
 
         <View>
-          <ProfileListItem text={'Backup'} icon={<Feather name="share" size={20} color={Colors.white} />}  />
-          <ProfileListItem text={'Notification'} icon={<AntDesign  name="bells" size={20} color={Colors.white} />} />
-          <ProfileListItem text={'Language'} icon={<FontAwesome  name="language" size={20} color={Colors.white} usa={'English (US)'} />} />
-          
-          <ProfileListItem text={'Share App'} icon={<MaterialCommunityIcons  name="arrow-top-right-bold-outline" size={20} color={Colors.white} usa={'English (US)'} />} />
-          <ProfileListItem text={'Change log'} icon={<MaterialCommunityIcons  name="card-text-outline" size={20} color={Colors.white} usa={'English (US)'} />} />
-          <ProfileListItem text={'Privacy Policy'} icon={<Ionicons  name="ios-shield-checkmark-outline" size={20} color={Colors.white} usa={'English (US)'} />} />
-          <ProfileListItem text={'FAQ'} icon={<Feather  name="alert-octagon" size={20} color={Colors.white} usa={'English (US)'} />} />
-          <ProfileListItem text={'Quit'} icon={<Feather  name="log-out" size={20} color={Colors.white} usa={'English (US)'} />} />
+          <ProfileListItem
+            text={"Backup"}
+            icon={<Feather name="share" size={20} color={Colors.white} />}
+          />
+          <ProfileListItem
+            text={"Notification"}
+            icon={<AntDesign name="bells" size={20} color={Colors.white} />}
+          />
+          <ProfileListItem
+            text={"Language"}
+            icon={
+              <FontAwesome
+                name="language"
+                size={20}
+                color={Colors.white}
+                usa={"English (US)"}
+              />
+            }
+          />
+
+          <ProfileListItem
+            text={"Share App"}
+            icon={
+              <MaterialCommunityIcons
+                name="arrow-top-right-bold-outline"
+                size={20}
+                color={Colors.white}
+                usa={"English (US)"}
+              />
+            }
+          />
+          <ProfileListItem
+            text={"Change log"}
+            icon={
+              <MaterialCommunityIcons
+                name="card-text-outline"
+                size={20}
+                color={Colors.white}
+                usa={"English (US)"}
+              />
+            }
+          />
+          <ProfileListItem
+            text={"Privacy Policy"}
+            icon={
+              <Ionicons
+                name="ios-shield-checkmark-outline"
+                size={20}
+                color={Colors.white}
+                usa={"English (US)"}
+              />
+            }
+          />
+          <ProfileListItem
+            text={"FAQ"}
+            icon={
+              <Feather
+                name="alert-octagon"
+                size={20}
+                color={Colors.white}
+                usa={"English (US)"}
+              />
+            }
+          />
+          <ProfileListItem
+            text={"Quit"}
+            icon={
+              <Feather
+                name="log-out"
+                size={20}
+                color={Colors.white}
+                usa={"English (US)"}
+              />
+            }
+          />
         </View>
-       
       </View>
     </View>
   );
@@ -56,13 +123,13 @@ const Settings = ({ artist, recently, mostPlayed, imageStyle, text }) => {
 export default Settings;
 
 const styles = StyleSheet.create({
-  list:{flexDirection:'row', },
+  list: { flexDirection: "row" },
   profileDiv: {
     width: wp("80%"),
     alignSelf: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop:hp('2%')
+    marginTop: hp("2%"),
   },
   img: { width: wp("80%"), height: hp("25%"), borderRadius: 20 },
   imgContainer: {

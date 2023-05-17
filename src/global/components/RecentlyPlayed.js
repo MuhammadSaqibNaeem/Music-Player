@@ -33,7 +33,7 @@ const RecentlyPlayed = ({
   //   return (
   //     // <TouchableOpacity style={styles.itemContainer}>
   //     //   <Image
-  //     //     source={require("../../assets/images/download.jpg")}
+  //     //     source={require("../../assets/images/music11.png")}
   //     //     style={[styles.itemImage, { borderRadius: imageStyle ? 50 : 8 }]}
   //     //   />
   //     //   <Text style={styles.itemTitle}>{item?.name}</Text>

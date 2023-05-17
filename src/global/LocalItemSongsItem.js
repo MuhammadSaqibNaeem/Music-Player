@@ -38,12 +38,12 @@ const LocalItemSongsItem = ({ item, imageStyle, onPress }) => {
         >
           {imageStyle ? (
             <Image
-              source={require("../assets/images/download.jpg")}
+              source={require("../assets/images/music11.png")}
               style={[styles.itemImage, { borderRadius: 50 }]}
             />
           ) : (
             <Image
-              source={require("../assets/images/download.jpg")}
+              source={require("../assets/images/music11.png")}
               style={[styles.itemImage, { borderRadius: 8 }]}
             />
           )}
@@ -93,10 +93,11 @@ const styles = StyleSheet.create({
     // height:hp('10%')
   },
   itemImage: {
-    width: wp("18%"),
-    height: hp("9%"),
+    width: wp("12%"),
+    height: hp("6%"),
     // borderRadius: 8,
     marginBottom: 8,
+    tintColor: Colors.yellow,
   },
   itemTitle: {
     fontSize: headings.small,
